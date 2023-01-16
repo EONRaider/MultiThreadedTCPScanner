@@ -81,6 +81,5 @@ class PortScanner:
 
 
 if __name__ == "__main__":
-    cliap = CLIArgumentsParser()
-    ps = PortScanner(cliap.get_args())
-    ps.scan_ports()
+    cli_args = CLIArgumentsParser().get_args()
+    PortScanner(cli_args).scan_ports()
