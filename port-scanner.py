@@ -1,19 +1,34 @@
-#!/bin/python3
+#!/usr/bin/python3
 import argparse
 import socket
-import sys
+
 
 class CLIArgumentsParser:
     def __init__(self):
-        self.parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description="Scan any number of ports on a target machine")
-        self.parser.add_argument("-t", "--target", help="Target machine to scan")
+        self.parser = argparse.ArgumentParser(
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            description="Scan any number of ports on a target machine",
+        )
+        self.parser.add_argument(
+            "-t", "--target",
+            help="Target machine to scan"
+        )
         self.p = self.parser.add_mutually_exclusive_group()
-        self.p.add_argument("-a", "--all", help="Scan all ports", action="store_true")
-        self.p.add_argument("-p", "--ports", help="Specify ports (separated by a comma if multiple)")
+        self.p.add_argument(
+            "-a", "--all",
+            help="Scan all ports",
+            action="store_true"
+        )
+        self.p.add_argument(
+            "-p",
+            "--ports",
+            help="Specify ports (separated by a comma if multiple)"
+        )
         self.args = vars(self.parser.parse_args())
 
     def get_args(self):
         return self.args
+
 
 class PortScanner:
     def __init__(self, args):
@@ -63,6 +78,7 @@ class PortScanner:
                 self.scan_multiple_ports()
             else:
                 self.scan_single_port()
+
 
 if __name__ == "__main__":
     cliap = CLIArgumentsParser()
