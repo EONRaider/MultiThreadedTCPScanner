@@ -3,7 +3,7 @@ import argparse
 import socket
 import sys
 
-class CLIArguments:
+class CLIArgumentsParser:
     def __init__(self):
         self.parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description="Scan any number of ports on a target machine")
         self.parser.add_argument("-t", "--target", help="Target machine to scan")
@@ -55,7 +55,6 @@ class PortScanner:
             print(f"Port {self.ports} on {self.target} is closed.")
         sock.close()
 
-
     def scan_ports(self):
         if self.all:
             self.scan_all_ports()
@@ -66,6 +65,6 @@ class PortScanner:
                 self.scan_single_port()
 
 if __name__ == "__main__":
-    clia = CLIArguments()
+    cliap = CLIArgumentsParser()
     ps = PortScanner(clia.get_args())
     ps.scan_ports()
