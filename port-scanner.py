@@ -14,6 +14,8 @@ class CLIArgumentsParser:
             help="Target machine to scan"
         )
         self.p = self.parser.add_mutually_exclusive_group()
+
+    def parse(self, *args, **kwargs) -> argparse.Namespace:
         self.p.add_argument(
             "-a", "--all",
             help="Scan all ports",
@@ -24,17 +26,14 @@ class CLIArgumentsParser:
             "--ports",
             help="Specify ports (separated by a comma if multiple)"
         )
-        self.args = vars(self.parser.parse_args())
-
-    def get_args(self):
-        return self.args
+        return self.parser.parse_args(*args, **kwargs)
 
 
 class PortScanner:
     def __init__(self, args):
-        self.target = args["target"]
-        self.all = args["all"]
-        self.ports = args["ports"]
+        self.target = args.target
+        self.all = args.all
+        self.ports = args.ports
 
     def scan_all_ports(self):
         found_open_ports = False
@@ -81,5 +80,5 @@ class PortScanner:
 
 
 if __name__ == "__main__":
-    cli_args = CLIArgumentsParser().get_args()
+    cli_args = CLIArgumentsParser().parse()
     PortScanner(cli_args).scan_ports()
