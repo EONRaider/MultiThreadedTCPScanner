@@ -14,15 +14,15 @@ class CLIArgumentsParser:
             type=str,
             help="Target machine to scan"
         )
-        self.p = self.parser.add_mutually_exclusive_group()
+        self.group = self.parser.add_mutually_exclusive_group()
 
     def parse(self, *args, **kwargs) -> argparse.Namespace:
-        self.p.add_argument(
+        self.group.add_argument(
             "-a", "--all",
             help="Scan all ports",
             action="store_true"
         )
-        self.p.add_argument(
+        self.group.add_argument(
             "-p", "--ports",
             type=str,
             help="Specify ports (separated by a comma if multiple)"
