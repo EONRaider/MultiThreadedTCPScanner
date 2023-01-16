@@ -31,10 +31,10 @@ class CLIArgumentsParser:
 
 
 class PortScanner:
-    def __init__(self, args):
-        self.target = args.target
-        self.all = args.all
-        self.ports = args.ports
+    def __init__(self, target: str, ports: str, all_ports: bool):
+        self.target = target
+        self.all_ports = all_ports
+        self.ports = ports
 
     def scan_all_ports(self):
         found_open_ports = False
@@ -71,7 +71,7 @@ class PortScanner:
         sock.close()
 
     def scan_ports(self):
-        if self.all:
+        if self.all_ports:
             self.scan_all_ports()
         else:
             if "," in self.ports:
@@ -82,4 +82,9 @@ class PortScanner:
 
 if __name__ == "__main__":
     cli_args = CLIArgumentsParser().parse()
-    PortScanner(cli_args).scan_ports()
+
+    PortScanner(
+        target=cli_args.target,
+        ports=cli_args.ports,
+        all_ports=cli_args.all
+    ).scan_ports()
