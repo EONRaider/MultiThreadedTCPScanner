@@ -10,7 +10,8 @@ class CLIArgumentsParser:
             description="Scan any number of ports on a target machine",
         )
         self.parser.add_argument(
-            "-t", "--target",
+            "target",
+            type=str,
             help="Target machine to scan"
         )
         self.p = self.parser.add_mutually_exclusive_group()
@@ -22,8 +23,8 @@ class CLIArgumentsParser:
             action="store_true"
         )
         self.p.add_argument(
-            "-p",
-            "--ports",
+            "-p", "--ports",
+            type=str,
             help="Specify ports (separated by a comma if multiple)"
         )
         return self.parser.parse_args(*args, **kwargs)
