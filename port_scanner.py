@@ -4,7 +4,7 @@ import socket
 from modules.cli import CLIArgumentsParser
 
 
-class PortScanner:
+class TCPConnectScanner:
     def __init__(self, target: str, ports: str, all_ports: bool):
         self.target = target
         self.all_ports = all_ports
@@ -57,7 +57,7 @@ class PortScanner:
 if __name__ == "__main__":
     cli_args = CLIArgumentsParser().parse()
 
-    PortScanner(
+    TCPScanner(
         target=cli_args.target,
         ports=cli_args.ports,
         all_ports=cli_args.all
