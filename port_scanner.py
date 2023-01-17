@@ -5,9 +5,8 @@ from modules.cli import CLIArgumentsParser
 
 
 class TCPConnectScanner:
-    def __init__(self, target: str, ports: str, all_ports: bool):
+    def __init__(self, target: str, ports: str):
         self.target = target
-        self.all_ports = all_ports
         self.ports = ports
 
     def scan_all_ports(self):
@@ -45,20 +44,12 @@ class TCPConnectScanner:
         sock.close()
 
     def scan_ports(self):
-        if self.all_ports:
-            self.scan_all_ports()
+        if "," in self.ports:
+            self.scan_multiple_ports()
         else:
-            if "," in self.ports:
-                self.scan_multiple_ports()
-            else:
-                self.scan_single_port()
+            self.scan_single_port()
 
 
 if __name__ == "__main__":
     cli_args = CLIArgumentsParser().parse()
-
-    TCPScanner(
-        target=cli_args.target,
-        ports=cli_args.ports,
-        all_ports=cli_args.all
-    ).scan_ports()
+    TCPConnectScanner(target=cli_args.target, ports=cli_args.ports).scan_ports()
