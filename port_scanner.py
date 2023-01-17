@@ -1,55 +1,64 @@
 #!/usr/bin/python3
 import socket
+from collections.abc import Collection
+from dataclasses import dataclass
+from enum import Enum
+from typing import Iterator
 
 from modules.cli import CLIArgumentsParser
+from modules.exceptions import HostnameResolutionError
+
+
+class PortState(Enum):
+    UNDEFINED = "Undefined"
+    OPEN = "Open"
+    TIMEOUT = "Closed | Timeout"
+    CONNREFUSED = "Closed | ConnectionRefused"
+
+
+@dataclass
+class ScanResult:
+    port: int
+    state: PortState = PortState.UNDEFINED
 
 
 class TCPConnectScanner:
-    def __init__(self, target: str, ports: str):
+    def __init__(self, target: str, ports: Collection[int], timeout: int):
         self.target = target
         self.ports = ports
+        self.timeout = timeout
+        self.results: list[ScanResult] = []
 
-    def scan_all_ports(self):
-        found_open_ports = False
-        for i in range(1, 65536):
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            result = sock.connect_ex((self.target, i))
-            if result == 0:
-                print(f"Port {i} on {self.target} is open.")
-                found_open_ports = True
-        if not found_open_ports:
-            print(f"Could not detect any open ports on {self.target}")
-        sock.close()
-
-    def scan_multiple_ports(self):
-        ports_list = self.ports.split(",")
-        found_open_ports = False
-        for p in ports_list:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            result = sock.connect_ex((self.target, int(p)))
-            if result == 0:
-                print(f"Port {p} on {self.target} is open.")
-                found_open_ports = True
-        if not found_open_ports:
-            print(f"None of the specified ports are open on {self.target}")
-        sock.close()
-
-    def scan_single_port(self):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex((self.target, int(self.ports)))
-        if result == 0:
-            print(f"Port {self.ports} on {self.target} is open.")
-        else:
-            print(f"Port {self.ports} on {self.target} is closed.")
-        sock.close()
-
-    def scan_ports(self):
-        if "," in self.ports:
-            self.scan_multiple_ports()
-        else:
-            self.scan_single_port()
+    def execute(self) -> Iterator[ScanResult]:
+        for port in self.ports:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.settimeout(self.timeout)
+                try:
+                    result = ScanResult(port)
+                    sock.connect((self.target, port))
+                except socket.gaierror:
+                    yield HostnameResolutionError(
+                        f"Failed to connect or resolve hostname to target "
+                        f"address {self.target}"
+                    )
+                except socket.timeout:
+                    result.state = PortState.TIMEOUT
+                except ConnectionRefusedError:
+                    result.state = PortState.CONNREFUSED
+                else:
+                    result.state = PortState.OPEN
+                self.results.append(result)
+            yield result
 
 
 if __name__ == "__main__":
     cli_args = CLIArgumentsParser().parse()
-    TCPConnectScanner(target=cli_args.target, ports=cli_args.ports).scan_ports()
+    scanner = TCPConnectScanner(
+        target=cli_args.target,
+        ports=cli_args.ports,
+        timeout=cli_args.timeout)
+    try:
+        for scan_result in scanner.execute():
+            print(scan_result)
+    except KeyboardInterrupt:
+        raise SystemExit("Aborting port scanner...")
