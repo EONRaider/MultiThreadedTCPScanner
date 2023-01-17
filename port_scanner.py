@@ -1,33 +1,7 @@
 #!/usr/bin/python3
-import argparse
 import socket
 
-
-class CLIArgumentsParser:
-    def __init__(self):
-        self.parser = argparse.ArgumentParser(
-            formatter_class=argparse.RawDescriptionHelpFormatter,
-            description="Scan any number of ports on a target machine",
-        )
-        self.parser.add_argument(
-            "target",
-            type=str,
-            help="Target machine to scan"
-        )
-        self.group = self.parser.add_mutually_exclusive_group()
-
-    def parse(self, *args, **kwargs) -> argparse.Namespace:
-        self.group.add_argument(
-            "-a", "--all",
-            help="Scan all ports",
-            action="store_true"
-        )
-        self.group.add_argument(
-            "-p", "--ports",
-            type=str,
-            help="Specify ports (separated by a comma if multiple)"
-        )
-        return self.parser.parse_args(*args, **kwargs)
+from modules.cli import CLIArgumentsParser
 
 
 class PortScanner:
