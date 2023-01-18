@@ -4,7 +4,7 @@ from enum import Enum
 
 class PortState(Enum):
     UNDEFINED = "Undefined"
-    OPEN = "Open"
+    OPEN = "Open | SYN/ACK"
     TIMEOUT = "Closed | Timeout"
     CONNREFUSED = "Closed | ConnectionRefused"
 
