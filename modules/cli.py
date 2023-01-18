@@ -29,6 +29,9 @@ class CLIArgumentsParser:
             help="Time to wait for server response before giving up on the "
             "connection attempt (defaults to 1 second)",
         )
+        self.parser.add_argument(
+            "-o", "--output", type=str, help="Output results to the specified file path"
+        )
         self.parsed_args = self.parser.parse_args(*args, **kwargs)
         self.parsed_args.ports = tuple(self._process_port_ranges())
         return self.parsed_args
@@ -58,5 +61,3 @@ class CLIArgumentsParser:
                             f"{pathlib.Path(__file__).name} --help for usage "
                             f"instructions."
                         )
-
-    def _process_file_path(self):
