@@ -1,5 +1,7 @@
 import socket
 from collections.abc import Collection, Iterator
+from contextlib import contextmanager
+from time import perf_counter
 
 from modules.core import ScanResult, PortState
 from modules.exceptions import HostnameResolutionError
@@ -13,6 +15,14 @@ class TCPConnectScanner:
         self.timeout = timeout
         self.results: list[ScanResult] = []
         self._observers: list[OutputProcessor] = []
+        self.start_time = float()
+        self.total_time = float()
+
+    @contextmanager
+    def _timer(self) -> None:
+        self.start_time = perf_counter()
+        yield
+        self.total_time = perf_counter() - self.start_time
 
     @property
     def num_ports(self) -> int:
@@ -25,23 +35,24 @@ class TCPConnectScanner:
         [observer.update(result) for observer in self._observers]
 
     def execute(self) -> Iterator[ScanResult]:
-        for port in self.ports:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-                sock.settimeout(self.timeout)
-                try:
-                    result = ScanResult(port)
-                    sock.connect((self.target, port))
-                except socket.gaierror:
-                    yield HostnameResolutionError(
-                        f"Failed to connect or resolve hostname to target "
-                        f"address {self.target}"
-                    )
-                except socket.timeout:
-                    result.state = PortState.TIMEOUT
-                except ConnectionRefusedError:
-                    result.state = PortState.CONNREFUSED
-                else:
-                    result.state = PortState.OPEN
-                self.results.append(result)
-                self._notify_all(result)
-            yield result
+        with self._timer():
+            for port in self.ports:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                    sock.settimeout(self.timeout)
+                    try:
+                        result = ScanResult(port)
+                        sock.connect((self.target, port))
+                    except socket.gaierror:
+                        yield HostnameResolutionError(
+                            f"Failed to connect or resolve hostname to target "
+                            f"address {self.target}"
+                        )
+                    except socket.timeout:
+                        result.state = PortState.TIMEOUT
+                    except ConnectionRefusedError:
+                        result.state = PortState.CONNREFUSED
+                    else:
+                        result.state = PortState.OPEN
+                    self.results.append(result)
+                    self._notify_all(result)
+                yield result
