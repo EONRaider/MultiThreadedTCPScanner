@@ -1,9 +1,9 @@
-from collections.abc import Collection, Iterator
 import socket
+from collections.abc import Collection, Iterator
 
 from modules.core import ScanResult, PortState
 from modules.exceptions import HostnameResolutionError
-from modules.output.base import OutputProcessor
+from modules.output.base_processor import OutputProcessor
 
 
 class TCPConnectScanner:

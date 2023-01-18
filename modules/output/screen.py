@@ -1,5 +1,5 @@
 from modules.core import ScanResult
-from modules.output.base import OutputProcessor
+from modules.output.base_processor import OutputProcessor
 
 
 class ScreenOutput(OutputProcessor):
