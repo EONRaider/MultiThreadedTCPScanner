@@ -14,27 +14,20 @@ class CLIArgumentsParser:
         self.parsed_args = None
 
     def parse(self, *args, **kwargs) -> argparse.Namespace:
-        self.parser.add_argument(
-            "target",
-            type=str,
-            help="Target machine to scan"
-        )
+        self.parser.add_argument("target", type=str, help="Target machine to scan")
         self.group.add_argument(
-            "-p", "--ports",
+            "-p",
+            "--ports",
             type=str,
-            help="Specify ports (separated by a comma if multiple)"
+            help="Specify ports (separated by a comma if multiple)",
         )
-        self.group.add_argument(
-            "--all",
-            action="store_true",
-            help="Scan all ports"
-        )
+        self.group.add_argument("--all", action="store_true", help="Scan all ports")
         self.parser.add_argument(
             "--timeout",
             type=float,
             default=1.0,
             help="Time to wait for server response before giving up on the "
-                 "connection attempt (defaults to 1 second)"
+            "connection attempt (defaults to 1 second)",
         )
         self.parsed_args = self.parser.parse_args(*args, **kwargs)
         self.parsed_args.ports = tuple(self._process_port_ranges())
