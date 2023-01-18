@@ -11,4 +11,4 @@ class TestScanResult:
     def test_state_change(self):
         result = ScanResult(80)
         result.state = PortState.TIMEOUT
-        assert result.state.value == "Closed | Timeout"
+        assert result.state.value == "Closed | No Response"
