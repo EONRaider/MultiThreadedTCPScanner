@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from modules.cli import CLIArgumentsParser
 from modules.exceptions import PortScannerException
+from modules.output.file import FileOutput
 from modules.output.screen import ScreenOutput
 from modules.tcp_connect import TCPConnectScanner
 
@@ -16,6 +17,8 @@ class PortScanner:
 
     def execute(self) -> None:
         ScreenOutput(scanner=self.tcp_connect)
+        if self.cli_args.output is not None:
+            FileOutput(scanner=self.tcp_connect, path=self.cli_args.output)
         try:
             for result in self.tcp_connect.execute():
                 if isinstance(result, PortScannerException):
