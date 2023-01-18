@@ -7,12 +7,12 @@ from modules.output.base import OutputProcessor
 
 
 class TCPConnectScanner:
-    def __init__(self, target: str, ports: Collection[int], timeout: int):
+    def __init__(self, target: str, ports: Collection[int], timeout: float):
         self.target = target
         self.ports = ports
         self.timeout = timeout
         self.results: list[ScanResult] = []
-        self.observers = []
+        self.observers: list[OutputProcessor] = []
 
     def register(self, observer: OutputProcessor) -> None:
         self.observers.append(observer)
