@@ -51,6 +51,8 @@ class TCPConnectScanner:
                         result.state = PortState.TIMEOUT
                     except ConnectionRefusedError:
                         result.state = PortState.CONNREFUSED
+                    except OSError:
+                        result.state = PortState.NETERROR
                     else:
                         result.state = PortState.OPEN
                     self.results.append(result)
