@@ -22,9 +22,11 @@ class PortScanner:
         try:
             for result in self.tcp_connect.execute():
                 if isinstance(result, PortScannerException):
+                    # Raise exceptions, if any. Else feed the observers
+                    # with scan results.
                     raise result
         except KeyboardInterrupt:
-            raise SystemExit("[!] Aborting port scanner...")
+            raise SystemExit("[!] TCP port scanner aborted by user. Exiting...")
 
 
 if __name__ == "__main__":
