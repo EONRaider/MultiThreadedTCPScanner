@@ -3,6 +3,7 @@ from typing import Collection, Iterator
 
 from modules.core import ScanResult, PortState
 from modules.exceptions import HostnameResolutionError
+from modules.output.base import OutputProcessor
 
 
 class TCPConnectScanner:
@@ -13,7 +14,7 @@ class TCPConnectScanner:
         self.results: list[ScanResult] = []
         self.observers = []
 
-    def register(self, observer) -> None:
+    def register(self, observer: OutputProcessor) -> None:
         self.observers.append(observer)
 
     def _update_all(self, result: ScanResult) -> None:
