@@ -1,25 +1,25 @@
 import argparse
-from collections.abc import Iterator
 import pathlib
 import re
+from collections.abc import Iterator
 
 
 class CLIArgumentsParser:
     def __init__(self):
         self.parser = argparse.ArgumentParser(
             formatter_class=argparse.RawDescriptionHelpFormatter,
-            description="Scan any number of ports on a target machine",
+            description="Perform TCP-connect scans on ports of a given host",
         )
         self.group = self.parser.add_mutually_exclusive_group()
         self.parsed_args = None
 
     def parse(self, *args, **kwargs) -> argparse.Namespace:
-        self.parser.add_argument("target", type=str, help="Target machine to scan")
+        self.parser.add_argument("target", type=str, help="Target host to scan")
         self.group.add_argument(
             "-p",
             "--ports",
             type=str,
-            help="Specify ports (separated by a comma if multiple)",
+            help="A comma-separated list of port numbers and/or port ranges to scan",
         )
         self.group.add_argument("--all", action="store_true", help="Scan all ports")
         self.parser.add_argument(
