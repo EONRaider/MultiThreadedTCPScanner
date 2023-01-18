@@ -34,27 +34,32 @@ class TCPConnectScanner:
     def _notify_all(self, result: ScanResult) -> None:
         [observer.update(result) for observer in self._observers]
 
+    def _probe_target_port(self, port: int) -> ScanResult:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.settimeout(self.timeout)
+            try:
+                result = ScanResult(port)
+                sock.connect((self.target, port))
+            except socket.timeout:
+                result.state = PortState.TIMEOUT
+            except ConnectionRefusedError:
+                result.state = PortState.CONNREFUSED
+            except OSError:
+                result.state = PortState.NETERROR
+            else:
+                result.state = PortState.OPEN
+        return result
+
     def execute(self) -> Iterator[ScanResult]:
         with self._timer():
             for port in self.ports:
-                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-                    sock.settimeout(self.timeout)
-                    try:
-                        result = ScanResult(port)
-                        sock.connect((self.target, port))
-                    except socket.gaierror:
-                        yield HostnameResolutionError(
-                            f"Failed to connect or resolve hostname to target "
-                            f"address {self.target}"
-                        )
-                    except socket.timeout:
-                        result.state = PortState.TIMEOUT
-                    except ConnectionRefusedError:
-                        result.state = PortState.CONNREFUSED
-                    except OSError:
-                        result.state = PortState.NETERROR
-                    else:
-                        result.state = PortState.OPEN
+                try:
+                    result = self._probe_target_port(port)
                     self.results.append(result)
                     self._notify_all(result)
-                yield result
+                    yield result
+                except socket.gaierror:
+                    yield HostnameResolutionError(
+                        f"Failed to connect or resolve hostname to target "
+                        f"address {self.target}"
+                    )
