@@ -49,6 +49,7 @@ class CLIArgumentsParser:
                     yield port
                 except ValueError:  # Failed to cast port into integer
                     try:
+                        # Interpret string as a range of ports
                         start, end = (int(port) for port in port.split("-"))
                         yield from range(start, end + 1)
                     except ValueError:  # Generic syntax error
