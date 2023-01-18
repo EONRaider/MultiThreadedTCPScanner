@@ -11,6 +11,14 @@ class TCPConnectScanner:
         self.ports = ports
         self.timeout = timeout
         self.results: list[ScanResult] = []
+        self.observers = []
+
+    def register(self, observer) -> None:
+        self.observers.append(observer)
+
+    def _update_all(self, result: ScanResult) -> None:
+        for observer in self.observers:
+            observer.update(result)
 
     def execute(self) -> Iterator[ScanResult]:
         for port in self.ports:
@@ -31,4 +39,5 @@ class TCPConnectScanner:
                 else:
                     result.state = PortState.OPEN
                 self.results.append(result)
+                self._update_all(result)
             yield result
