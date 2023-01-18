@@ -46,7 +46,7 @@ class CLIArgumentsParser:
         Ex: From '20-25,53,80,111' to (20,21,22,23,24,25,53,80,111)
         """
         if self.parsed_args.all is True:
-            yield from range(0, 65536)
+            yield from range(1, 65536)
         else:
             for port in re.split(r"\s*,\s*", self.parsed_args.ports):
                 try:

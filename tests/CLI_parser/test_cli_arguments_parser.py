@@ -14,7 +14,7 @@ class TestCLIArgumentsParser:
     def test_parse_all_ports(self):
         parser = CLIArgumentsParser()
         args = parser.parse(["target.com", "--all"])
-        assert args.ports == tuple(range(0, 65536))
+        assert args.ports == tuple(range(1, 65536))
 
     @pytest.mark.parametrize("invalid_input", ["20=25, abc*def, a+b"])
     def test_invalid_syntax(self, invalid_input):
