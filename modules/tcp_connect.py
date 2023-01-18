@@ -17,7 +17,7 @@ class TCPConnectScanner:
     def register(self, observer: OutputProcessor) -> None:
         self._observers.append(observer)
 
-    def _update_all(self, result: ScanResult) -> None:
+    def _notify_all(self, result: ScanResult) -> None:
         [observer.update(result) for observer in self._observers]
 
     def execute(self) -> Iterator[ScanResult]:
@@ -39,5 +39,5 @@ class TCPConnectScanner:
                 else:
                     result.state = PortState.OPEN
                 self.results.append(result)
-                self._update_all(result)
+                self._notify_all(result)
             yield result
