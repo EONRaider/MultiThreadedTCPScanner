@@ -14,6 +14,10 @@ class TCPConnectScanner:
         self.results: list[ScanResult] = []
         self._observers: list[OutputProcessor] = []
 
+    @property
+    def num_ports(self) -> int:
+        return len(self.ports)
+
     def register(self, observer: OutputProcessor) -> None:
         self._observers.append(observer)
 
