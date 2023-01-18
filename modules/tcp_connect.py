@@ -18,8 +18,7 @@ class TCPConnectScanner:
         self.observers.append(observer)
 
     def _update_all(self, result: ScanResult) -> None:
-        for observer in self.observers:
-            observer.update(result)
+        [observer.update(result) for observer in self.observers]
 
     def execute(self) -> Iterator[ScanResult]:
         for port in self.ports:
