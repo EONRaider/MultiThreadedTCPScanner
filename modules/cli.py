@@ -1,7 +1,7 @@
 import argparse
+from collections.abc import Iterator
 import pathlib
 import re
-from typing import Iterator
 
 
 class CLIArgumentsParser:
@@ -58,3 +58,5 @@ class CLIArgumentsParser:
                             f"{pathlib.Path(__file__).name} --help for usage "
                             f"instructions."
                         )
+
+    def _process_file_path(self):

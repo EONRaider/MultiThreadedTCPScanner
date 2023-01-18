@@ -1,5 +1,5 @@
+from collections.abc import Collection, Iterator
 import socket
-from typing import Collection, Iterator
 
 from modules.core import ScanResult, PortState
 from modules.exceptions import HostnameResolutionError
