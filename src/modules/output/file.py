@@ -11,7 +11,10 @@ class FileOutput(OutputProcessor):
         self.file = None
 
     def startup(self) -> None:
-        self.file = self.path.open("a")
+        try:
+            self.file = self.path.open("a")
+        except OSError as e:
+            raise SystemExit(f"{e.__class__.__name__}: {e}")
 
     def cleanup(self) -> None:
         self.file.close()
