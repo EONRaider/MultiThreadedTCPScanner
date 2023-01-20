@@ -8,9 +8,12 @@ class FileOutput(OutputProcessor):
     def __init__(self, scanner, path: [str, Path]):
         super().__init__(scanner)
         self.path = Path(path)
+        self.file = None
+
+    def initialize(self) -> None:
         self.file = self.path.open("a")
 
-    def __del__(self):
+    def cleanup(self) -> None:
         self.file.close()
         print(f"[+] Scan results successfully written to {self.path}")
 
