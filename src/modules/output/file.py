@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from modules.core import ScanResult
-from modules.output.base_processor import OutputProcessor
+from src.modules.core import ScanResult
+from src.modules.output.base_processor import OutputProcessor
 
 
 class FileOutput(OutputProcessor):

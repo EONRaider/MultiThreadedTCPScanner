@@ -2,11 +2,11 @@
 from collections.abc import Collection
 from pathlib import Path
 
-from modules.cli import CLIArgumentsParser
-from modules.exceptions import PortScannerException
-from modules.output.file import FileOutput
-from modules.output.screen import ScreenOutput
-from modules.tcp_connect import TCPConnectScanner
+from src.modules.cli import CLIArgumentsParser
+from src.modules.exceptions import PortScannerException
+from src.modules.output.file import FileOutput
+from src.modules.output.screen import ScreenOutput
+from src.modules.tcp_connect import TCPConnectScanner
 
 
 class PortScanner:

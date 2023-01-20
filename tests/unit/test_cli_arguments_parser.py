@@ -1,6 +1,6 @@
 import pytest
 
-from modules.cli import CLIArgumentsParser
+from src.modules.cli import CLIArgumentsParser
 
 
 class TestCLIArgumentsParser:
