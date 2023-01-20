@@ -11,7 +11,7 @@ class OutputProcessor(ABC):
         self.scanner.register(self)
 
     @abstractmethod
-    def update(self, *args, **kwargs):
+    def update(self, *args, **kwargs) -> None:
         ...
 
     def initialize(self, *args, **kwargs) -> None:
