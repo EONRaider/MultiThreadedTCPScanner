@@ -2,7 +2,6 @@
 from collections.abc import Collection
 from pathlib import Path
 
-from src.modules.cli import CLIArgumentsParser
 from src.modules.exceptions import PortScannerException
 from src.modules.output.file import FileOutput
 from src.modules.output.screen import ScreenOutput
@@ -42,13 +41,3 @@ class PortScanner:
                         raise result
             except KeyboardInterrupt:
                 raise SystemExit("[!] TCP port scanner aborted by user. Exiting...")
-
-
-if __name__ == "__main__":
-    cli_args = CLIArgumentsParser().parse()
-    PortScanner(
-        target=cli_args.target,
-        ports=cli_args.ports,
-        timeout=cli_args.timeout,
-        output_file_path=cli_args.output,
-    ).execute()
