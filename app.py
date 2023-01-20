@@ -1,4 +1,4 @@
-from src.modules.cli import CLIArgumentsParser
+from src.modules.cli_parsing import CLIArgumentsParser
 from src.port_scanner import PortScanner
 
 if __name__ == "__main__":
