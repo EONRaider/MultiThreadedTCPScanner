@@ -19,14 +19,16 @@ class PortScanner:
         ScreenOutput(scanner=self.tcp_connect)
         if self.cli_args.output is not None:
             FileOutput(scanner=self.tcp_connect, path=self.cli_args.output)
-        try:
-            for result in self.tcp_connect.execute():
-                if isinstance(result, PortScannerException):
-                    # Raise exceptions, if any. Else feed the observers
-                    # with scan results.
-                    raise result
-        except KeyboardInterrupt:
-            raise SystemExit("[!] TCP port scanner aborted by user. Exiting...")
+
+        with self.tcp_connect:
+            try:
+                for result in self.tcp_connect.execute():
+                    if isinstance(result, PortScannerException):
+                        # Raise exceptions, if any. Else feed the observers
+                        # with scan results.
+                        raise result
+            except KeyboardInterrupt:
+                raise SystemExit("[!] TCP port scanner aborted by user. Exiting...")
 
 
 if __name__ == "__main__":
