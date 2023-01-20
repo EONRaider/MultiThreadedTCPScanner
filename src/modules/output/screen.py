@@ -1,6 +1,6 @@
 from time import ctime, time
 
-from src.modules.core import ScanResult
+from src.core.types import ScanResult
 from src.modules.output.base_processor import OutputProcessor
 
 

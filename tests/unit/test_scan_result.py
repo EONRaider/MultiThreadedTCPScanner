@@ -1,4 +1,4 @@
-from src.modules.core import ScanResult, PortState
+from src.core.types import ScanResult, PortState
 
 
 class TestScanResult:

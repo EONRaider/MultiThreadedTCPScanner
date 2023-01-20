@@ -3,8 +3,8 @@ from collections.abc import Collection, Iterator
 from contextlib import contextmanager, suppress
 from time import perf_counter
 
-from src.modules.core import ScanResult, PortState
-from src.modules.exceptions import HostnameResolutionError
+from src.core.types import ScanResult, PortState
+from src.core.exceptions import HostnameResolutionError
 from src.modules.output.base_processor import OutputProcessor
 
 

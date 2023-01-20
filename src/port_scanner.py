@@ -2,7 +2,7 @@
 from collections.abc import Collection
 from pathlib import Path
 
-from src.modules.exceptions import PortScannerException
+from src.core.exceptions import PortScannerException
 from src.modules.output.file import FileOutput
 from src.modules.output.screen import ScreenOutput
 from src.modules.scan_modes.tcp_connect import TCPConnect
