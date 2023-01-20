@@ -37,6 +37,9 @@ class TCPConnectScanner:
     def register(self, observer: OutputProcessor) -> None:
         self._observers.append(observer)
 
+    def unregister(self, observer: OutputProcessor) -> None:
+        self._observers.remove(observer)
+
     def _notify_all(self, result: ScanResult) -> None:
         [observer.update(result) for observer in self._observers]
 
