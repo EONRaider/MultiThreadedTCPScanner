@@ -11,12 +11,17 @@ from modules.tcp_connect import TCPConnectScanner
 
 class PortScanner:
     def __init__(
-        self, target: str, ports: Collection[int], timeout: float, output: [str, Path]
+        self,
+        *,
+        target: str,
+        ports: Collection[int],
+        timeout: float,
+        output_file_path: [str, Path] = None,
     ):
         self.target = target
         self.ports = ports
         self.timeout = timeout
-        self.output = output
+        self.file_path = output_file_path
         self.tcp_connect = TCPConnectScanner(
             target=self.target,
             ports=self.ports,
@@ -25,8 +30,8 @@ class PortScanner:
 
     def execute(self) -> None:
         ScreenOutput(scanner=self.tcp_connect)
-        if self.output is not None:
-            FileOutput(scanner=self.tcp_connect, path=self.output)
+        if self.file_path is not None:
+            FileOutput(scanner=self.tcp_connect, path=self.file_path)
 
         with self.tcp_connect:
             try:
@@ -45,5 +50,5 @@ if __name__ == "__main__":
         target=cli_args.target,
         ports=cli_args.ports,
         timeout=cli_args.timeout,
-        output=cli_args.output,
+        output_file_path=cli_args.output,
     ).execute()
