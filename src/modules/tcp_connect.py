@@ -8,7 +8,7 @@ from src.modules.exceptions import HostnameResolutionError
 from src.modules.output.base_processor import OutputProcessor
 
 
-class TCPConnectScanner:
+class TCPConnect:
     def __init__(self, target: str, ports: Collection[int], timeout: float):
         self.target = target
         self.ports = ports

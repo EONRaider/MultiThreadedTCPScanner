@@ -5,7 +5,7 @@ from pathlib import Path
 from src.modules.exceptions import PortScannerException
 from src.modules.output.file import FileOutput
 from src.modules.output.screen import ScreenOutput
-from src.modules.tcp_connect import TCPConnectScanner
+from src.modules.tcp_connect import TCPConnect
 
 
 class PortScanner:
@@ -21,7 +21,7 @@ class PortScanner:
         self.ports = ports
         self.timeout = timeout
         self.file_path = output_file_path
-        self.tcp_connect = TCPConnectScanner(
+        self.tcp_connect = TCPConnect(
             target=self.target,
             ports=self.ports,
             timeout=self.timeout,
