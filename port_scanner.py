@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+from collections.abc import Collection
+from pathlib import Path
+
 from modules.cli import CLIArgumentsParser
 from modules.exceptions import PortScannerException
 from modules.output.file import FileOutput
@@ -7,18 +10,23 @@ from modules.tcp_connect import TCPConnectScanner
 
 
 class PortScanner:
-    def __init__(self):
-        self.cli_args = CLIArgumentsParser().parse()
+    def __init__(
+        self, target: str, ports: Collection[int], timeout: float, output: [str, Path]
+    ):
+        self.target = target
+        self.ports = ports
+        self.timeout = timeout
+        self.output = output
         self.tcp_connect = TCPConnectScanner(
-            target=self.cli_args.target,
-            ports=self.cli_args.ports,
-            timeout=self.cli_args.timeout,
+            target=self.target,
+            ports=self.ports,
+            timeout=self.timeout,
         )
 
     def execute(self) -> None:
         ScreenOutput(scanner=self.tcp_connect)
-        if self.cli_args.output is not None:
-            FileOutput(scanner=self.tcp_connect, path=self.cli_args.output)
+        if self.output is not None:
+            FileOutput(scanner=self.tcp_connect, path=self.output)
 
         with self.tcp_connect:
             try:
@@ -32,4 +40,10 @@ class PortScanner:
 
 
 if __name__ == "__main__":
-    PortScanner().execute()
+    cli_args = CLIArgumentsParser().parse()
+    PortScanner(
+        target=cli_args.target,
+        ports=cli_args.ports,
+        timeout=cli_args.timeout,
+        output=cli_args.output,
+    ).execute()
