@@ -18,10 +18,10 @@ class TCPConnectScanner:
         self.start_time = float()
         self.total_time = float()
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         [observer.initialize() for observer in self._observers]
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         [observer.cleanup() for observer in self._observers]
 
     @contextmanager
