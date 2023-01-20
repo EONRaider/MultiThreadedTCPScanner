@@ -8,7 +8,7 @@ class ScreenOutput(OutputProcessor):
     def __init__(self, scanner):
         super().__init__(scanner)
 
-    def initialize(self) -> None:
+    def startup(self) -> None:
         print(f"[+] Starting port scanner at {ctime(time())}")
         print(f"[+] Scan results for {self.scanner.target}")
 

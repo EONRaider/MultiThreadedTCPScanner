@@ -10,7 +10,7 @@ class FileOutput(OutputProcessor):
         self.path = Path(path)
         self.file = None
 
-    def initialize(self) -> None:
+    def startup(self) -> None:
         self.file = self.path.open("a")
 
     def cleanup(self) -> None:

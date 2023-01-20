@@ -14,7 +14,7 @@ class OutputProcessor(ABC):
     def update(self, *args, **kwargs) -> None:
         ...
 
-    def initialize(self, *args, **kwargs) -> None:
+    def startup(self, *args, **kwargs) -> None:
         ...
 
     def cleanup(self, *args, **kwargs) -> None:
