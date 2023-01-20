@@ -13,3 +13,9 @@ class OutputProcessor(ABC):
     @abstractmethod
     def update(self, *args, **kwargs):
         pass
+
+    def initialize(self) -> None:
+        ...
+
+    def cleanup(self) -> None:
+        ...
