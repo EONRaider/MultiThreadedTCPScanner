@@ -13,6 +13,7 @@ class FileOutput(OutputProcessor):
     def startup(self) -> None:
         try:
             self.file = self.path.open("a")
+            self.file.write("port,state")
         except OSError as e:
             raise SystemExit(f"{e.__class__.__name__}: {e}")
 
@@ -21,4 +22,4 @@ class FileOutput(OutputProcessor):
         print(f"[+] Scan results successfully written to {self.path}")
 
     def update(self, result: ScanResult) -> None:
-        self.file.write(f"{result.port}, {result.state.value}\n")
+        self.file.write(result.csv_str)
