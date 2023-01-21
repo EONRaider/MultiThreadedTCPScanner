@@ -55,8 +55,8 @@ class TCPConnect:
     @property
     def num_ports(self) -> int:
         """
-        :return: An integer representing the total number of ports
-        probed by the scanner.
+        An integer representing the total number of ports probed by the
+        scanner.
         """
         return len(self.ports)
 
