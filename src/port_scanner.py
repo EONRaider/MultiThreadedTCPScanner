@@ -2,7 +2,6 @@
 from collections.abc import Collection
 from pathlib import Path
 
-from src.core.exceptions import PortScannerException
 from src.modules.output.file import FileOutput
 from src.modules.output.screen import ScreenOutput
 from src.modules.scan_modes.tcp_connect import TCPConnect
@@ -49,9 +48,9 @@ class PortScanner:
         with self.tcp_connect:
             try:
                 for result in self.tcp_connect.execute():
-                    if isinstance(result, PortScannerException):
+                    if isinstance(result, OSError):
                         # Raise exceptions, if any. Else feed the observers
                         # with scan results.
-                        raise result
+                        raise SystemExit(f"[!] {str(result)}")
             except KeyboardInterrupt:
                 raise SystemExit("[!] TCP port scanner aborted by user. Exiting...")
