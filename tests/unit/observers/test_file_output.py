@@ -5,11 +5,6 @@ from src.modules.output.file import FileOutput
 from src.modules.scan_modes.tcp_connect import TCPConnect
 
 
-@pytest.fixture
-def file_path(tmp_path):
-    return tmp_path / "test_file.txt"
-
-
 class TestFileOutput:
     def test_file_init(self, file_path, mock_tcp_connect):
         file_observer = FileOutput(mock_tcp_connect, path=file_path)

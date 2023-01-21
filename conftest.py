@@ -10,3 +10,8 @@ def mock_tcp_connect():
         ports=[21, 53, 80, 443],
         timeout=1,
     )
+
+
+@pytest.fixture
+def file_path(tmp_path):
+    return tmp_path / "test_file.txt"
