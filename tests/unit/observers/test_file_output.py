@@ -1,5 +1,3 @@
-import pytest
-
 from src.core.types import ScanResult, PortState
 from src.modules.output.file import FileOutput
 from src.modules.scan_modes.tcp_connect import TCPConnect
