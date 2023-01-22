@@ -11,6 +11,7 @@ class TestPortScanner:
             ports=[target_port],
             timeout=1.0,
             output_file_path=file_path,
+            max_threads=10
         )
 
         # Mock the call to TCPConnect._probe_target_port so the creation

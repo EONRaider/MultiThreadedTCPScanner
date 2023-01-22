@@ -1,5 +1,6 @@
 import socket
 from collections.abc import Collection, Iterator
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager, suppress
 from time import perf_counter
 
@@ -8,7 +9,9 @@ from src.modules.output.base_processor import OutputProcessor
 
 
 class TCPConnect:
-    def __init__(self, target: str, ports: Collection[int], timeout: float):
+    def __init__(
+        self, *, target: str, ports: Collection[int], timeout: float, max_threads: int
+    ):
         """
         Mode of operation for the execution of a port scan of the
         TCP-connect type.
@@ -22,6 +25,7 @@ class TCPConnect:
         self.target = target
         self.ports = ports
         self.timeout = timeout
+        self.max_threads = max_threads
         self.results: list[ScanResult] = []
         self._observers: list[OutputProcessor] = []
         self.start_time = float()
@@ -121,11 +125,11 @@ class TCPConnect:
         scanned port.
         """
         with self._timer():
-            for port in self.ports:
+            with ThreadPoolExecutor(max_workers=self.max_threads) as executor:
                 try:
-                    result = self._probe_target_port(port)
-                    self.results.append(result)
-                    self._notify_all(result)
-                    yield result
+                    for result in executor.map(self._probe_target_port, self.ports):
+                        self.results.append(result)
+                        self._notify_all(result)
+                        yield result
                 except OSError as exc:
                     yield exc

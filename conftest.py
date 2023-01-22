@@ -9,6 +9,7 @@ def mock_tcp_connect():
         target="non_existent_host_9328jdjks7887s.com",
         ports=[21, 53, 80, 443],
         timeout=1,
+        max_threads=10,
     )
 
 
