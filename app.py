@@ -8,4 +8,5 @@ if __name__ == "__main__":
         ports=cli_args.ports,
         timeout=cli_args.timeout,
         output_file_path=cli_args.output,
+        max_threads=cli_args.max_threads,
     ).execute()

@@ -35,6 +35,13 @@ class CLIArgumentsParser:
             type=str,
             help="Output results to the specified file path in CSV format",
         )
+        self.parser.add_argument(
+            "--max-threads",
+            type=int,
+            default=10,
+            help="Maximum number of threads that will connect to the target at a time "
+            "(defaults to 10)",
+        )
         self.parsed_args = self.parser.parse_args(*args, **kwargs)
         self.parsed_args.ports = tuple(self._process_port_ranges())
         return self.parsed_args

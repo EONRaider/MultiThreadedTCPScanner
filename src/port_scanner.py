@@ -15,6 +15,7 @@ class PortScanner:
         ports: Collection[int],
         timeout: float,
         output_file_path: [str, Path] = None,
+        max_threads: int,
     ):
         """
         A single-threaded TCP-connect port scanner
@@ -26,15 +27,19 @@ class PortScanner:
             before giving up and considering the port as closed.
         :param output_file_path: Absolute path to a file in which scan
             results will be saved.
+        :param max_threads: Maximum number of threads that will connect
+            to the target at a time
         """
         self.target = target
         self.ports = ports
         self.timeout = timeout
         self.file_path = output_file_path
+        self.max_threads = max_threads
         self.tcp_connect = TCPConnect(
             target=self.target,
             ports=self.ports,
             timeout=self.timeout,
+            max_threads=self.max_threads,
         )
 
     def execute(self) -> None:
