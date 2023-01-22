@@ -14,7 +14,7 @@ class TestPortScanner:
         )
 
         # Mock the call to TCPConnect._probe_target_port so the creation
-        # of a socket FD and a network call are prevented
+        # of a socket FD and a call to socket.connect are prevented
         mocker.patch(
             "src.modules.scan_modes.tcp_connect.TCPConnect._probe_target_port",
             return_value=(result := ScanResult(target_port, PortState.OPEN)),
