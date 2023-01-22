@@ -30,7 +30,10 @@ class CLIArgumentsParser:
             "connection attempt (defaults to 1 second)",
         )
         self.parser.add_argument(
-            "-o", "--output", type=str, help="Output results to the specified file path"
+            "-o",
+            "--output",
+            type=str,
+            help="Output results to the specified file path in CSV format",
         )
         self.parsed_args = self.parser.parse_args(*args, **kwargs)
         self.parsed_args.ports = tuple(self._process_port_ranges())

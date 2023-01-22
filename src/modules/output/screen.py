@@ -21,4 +21,4 @@ class ScreenOutput(OutputProcessor):
 
     @staticmethod
     def update(result: ScanResult) -> None:
-        print(f"\tPort {result.port} is {result.state.value}")
+        print(f"\t{result}")
